@@ -105,6 +105,9 @@ export default async (conversion: Conversion): Promise<Conversion> => {
 
   result.data.forEach((row: any) => {
     let relationName: string = row[`Tables_in_${conversion._mySqlDbName}`];
+    if(!relationName) {
+      relationName = row[`Tables_in_${conversion._mySqlDbName.toLowerCase()}`];
+    }
 
     if (row.Table_type === 'BASE TABLE' && conversion._excludeTables.indexOf(relationName) === -1) {
       relationName = extraConfigProcessor.getTableName(conversion, relationName, false);
